@@ -56,5 +56,7 @@ namespace DesafioAutomacao.PageObjects
             InsertEmail(email);
             webDriver.FindElement(CartPageObjects.createAccountButton).Click();
         }
+
+
     }
 }
