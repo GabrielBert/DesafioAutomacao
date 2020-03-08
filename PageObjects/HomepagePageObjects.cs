@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TesteAutomacao.PageObjects
+namespace DesafioAutomacao.PageObjects
 {
     public static class HomepagePageObjects
     {

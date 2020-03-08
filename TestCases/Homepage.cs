@@ -2,20 +2,16 @@
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Firefox;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SeleniumExtras.WaitHelpers;
 using OpenQA.Selenium.Support.UI;
-using TesteAutomacao.PageObjects;
+using DesafioAutomacao.PageObjects;
 
 namespace HomePage
 {
     class HomePage
     {
         IWebDriver Webdriver;
-
+        
         [SetUp]
         public void DriverInitialization()
         {
@@ -25,15 +21,34 @@ namespace HomePage
             Webdriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             Webdriver.Url = "http://automationpractice.com/";
             Webdriver.Manage().Window.Maximize();
-            OpenQA.Selenium.Support.UI.WebDriverWait webDriverWait = new WebDriverWait(Webdriver, TimeSpan.FromSeconds(40));
+            //Webdriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
         }
 
         [Test]
-        public void AcessProduct()
+        public void FinalizarCompra()
         {
+            WebDriverWait wait = new WebDriverWait(Webdriver, TimeSpan.FromSeconds(40));
             HomePageMethods homePageMethods = new HomePageMethods(Webdriver);
-            homePageMethods.SelectProduct("Faded Short Sleeve T-shirts");
+            ItemMethods itemMethods = new ItemMethods(Webdriver);
+            CartPageMethods cartPageMethods = new CartPageMethods(Webdriver);
+            FormPageMethods formPageMethods = new FormPageMethods(Webdriver);
+            string productName = "Faded Short Sleeve T-shirts";
+
+            //select an item on homepage
+            homePageMethods.SelectProduct(productName);
+
+            //add item to cart and proceed to checkout
+            itemMethods.AddToCart();
+            IWebElement element = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(ItemPageObjects.layerCart));
+            itemMethods.GoToCheckout();
+            Assert.IsTrue(cartPageMethods.GetBreadcrumb().Contains("Your shopping cart"));
+
+            //assert that item previously selected is on the cart and go to sign in
+            Assert.IsTrue(cartPageMethods.GetProductName().Contains(productName));
+            cartPageMethods.CheckoutNextStep();
+
         }
+
 
         [TearDown]
         public void EndTest()
