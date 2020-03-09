@@ -35,7 +35,7 @@ namespace HomePage
             AddressPageMethods addressPageMethods = new AddressPageMethods(Webdriver);
             PaymentPageMethods paymentPageMethods = new PaymentPageMethods(Webdriver);
             string productName = "Faded Short Sleeve T-shirts";
-            string consumerEmail = "testAutomation13@testAutomation.com";
+            string consumerEmail = "testAutomation17@testAutomation.com";
             string consumerFirstName = "Automation";
             string consumerLastName = "Test";
             string password = "abc123";
@@ -79,9 +79,9 @@ namespace HomePage
             //Assert.AreEqual(addressPageMethods.GetCountryName(), country);
             //.AreEqual(addressPageMethods.GetAddressPhone(), phone);
             wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(addressPageMethods.GetProceedButton()));
-            addressPageMethods.GoToNextStep();
+            addressPageMethods.GoToShipping();
             addressPageMethods.CheckTermsOfService();
-            addressPageMethods.GoToNextStep();
+            addressPageMethods.GoToPayment();
             Console.WriteLine(paymentPageMethods.SumTotalPrice());
             Assert.AreEqual(paymentPageMethods.GetTotalPrice(), paymentPageMethods.SumTotalPrice());
 
