@@ -32,7 +32,23 @@ namespace HomePage
             ItemMethods itemMethods = new ItemMethods(Webdriver);
             CartPageMethods cartPageMethods = new CartPageMethods(Webdriver);
             FormPageMethods formPageMethods = new FormPageMethods(Webdriver);
+            AddressPageMethods addressPageMethods = new AddressPageMethods(Webdriver);
+            PaymentPageMethods paymentPageMethods = new PaymentPageMethods(Webdriver);
             string productName = "Faded Short Sleeve T-shirts";
+            string consumerEmail = "testAutomation13@testAutomation.com";
+            string consumerFirstName = "Automation";
+            string consumerLastName = "Test";
+            string password = "abc123";
+            string birthDay = "15";
+            string birthMonth = "5";
+            string birthYear = "1990";
+            string address = "1784  Water Street";
+            string city = "Los Angeles";
+            string country = "United States";
+            string state = "California";
+            string postalCode = "90007";
+            string phone = "925-280-1092";
+
 
             //select an item on homepage
             homePageMethods.SelectProduct(productName);
@@ -46,18 +62,29 @@ namespace HomePage
             //assert that item previously selected is on the cart and go to sign in+
             //Assert.IsTrue(cartPageMethods.GetProductName().Contains(productName)); //esse assert não funciona
             cartPageMethods.CheckoutNextStep();
-            cartPageMethods.SubmitCreate("automation.test@test.com");
-            formPageMethods.InsertCostumerName("Automation", "Test");
-            formPageMethods.InsertPasword("abc123");
-            formPageMethods.InsertDateBirth("15", "5", "1990");
-            formPageMethods.InsertAddresstName("Automation", "Test");
-            formPageMethods.InsertAddres("1784  Water Street");
-            formPageMethods.InsertCity("Los Angeles");
-            formPageMethods.SelectCountry("United States");
-            formPageMethods.SelectState("California");
-            formPageMethods.InsertPostalCode("90007");
-            formPageMethods.InsertPhone("925-280-1092");
+            cartPageMethods.SubmitCreate(consumerEmail);
+            formPageMethods.InsertCostumerName(consumerFirstName, consumerLastName);
+            formPageMethods.InsertPasword(password);
+            formPageMethods.InsertDateBirth(birthDay, birthMonth, birthYear);
+            formPageMethods.InsertAddresstName(consumerFirstName, consumerLastName);
+            formPageMethods.InsertAddres(address);
+            formPageMethods.InsertCity(city);
+            formPageMethods.SelectCountry(country);
+            formPageMethods.SelectState(state);
+            formPageMethods.InsertPostalCode(postalCode);
+            formPageMethods.InsertPhone(phone);
             formPageMethods.FinishRegister();
+            //Assert.AreEqual(addressPageMethods.GetAddressName(), consumerFirstName + " " + consumerLastName);
+            //Assert.AreEqual(addressPageMethods.GetAddres(), city + ", " + state + " " + postalCode);
+            //Assert.AreEqual(addressPageMethods.GetCountryName(), country);
+            //.AreEqual(addressPageMethods.GetAddressPhone(), phone);
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(addressPageMethods.GetProceedButton()));
+            addressPageMethods.GoToNextStep();
+            addressPageMethods.CheckTermsOfService();
+            addressPageMethods.GoToNextStep();
+            Console.WriteLine(paymentPageMethods.SumTotalPrice());
+            Assert.AreEqual(paymentPageMethods.GetTotalPrice(), paymentPageMethods.SumTotalPrice());
+
         }
 
 
